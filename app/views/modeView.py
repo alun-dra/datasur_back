@@ -20,12 +20,21 @@ class ClienteView(viewsets.GenericViewSet):
     @action(detail=False, methods=['GET'], url_path='all')
     def GetClient(self, request, *args, **kwargs):
         """
-            @url: http://{{host}}:{{port}}/api/Client/client/all?page={{page}}
-            @ejemplo: http://127.0.0.1:8000/api/Client/client/all?page=1
+            @url: http://{{host}}:{{port}}/api/Client/client/all?page={{page}}&name={{nombre}}&empresa={{empresa_id}}
+            @ejemplo: http://127.0.0.1:8000/api/Client/client/all?page=1&name=Juan&empresa=1
             @successful_response: HTTP 200 (OK)
-            @description: obtiene a todos los clientes registrados en la base de datos. 
+            @description: obtiene a todos los clientes registrados en la base de datos, con opción de filtrar por nombre y empresa. 
         """
+        nombre_buscado = request.query_params.get('name', None)
+        empresa_id = request.query_params.get('empresa', None)
+
         queryset = Cliente.objects.all()
+        
+        if nombre_buscado is not None:
+            queryset = queryset.filter(nombres__icontains=nombre_buscado)
+        if empresa_id is not None:
+            queryset = queryset.filter(empresa__id=empresa_id)
+
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = ClienteSerializer(page, many=True)

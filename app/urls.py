@@ -10,7 +10,7 @@ journals_router.register(r'client', ClienteView, basename='re_cliente')
 
 
 urlpatterns = [
-    path('Cliente/', include(journals_router.urls)),
+    path('Client/', include(journals_router.urls)),
 
 
 ]
