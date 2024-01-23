@@ -20,8 +20,8 @@ class ClienteView(viewsets.GenericViewSet):
     @action(detail=False, methods=['GET'], url_path='all')
     def GetClient(self, request, *args, **kwargs):
         """
-            @url: http://{{host}}:{{port}}/api/Journal/journal/all?page={{page}}
-            @ejemplo: http://127.0.0.1:8000/api/Journal/journal/all?page=1
+            @url: http://{{host}}:{{port}}/api/Client/client/all?page={{page}}
+            @ejemplo: http://127.0.0.1:8000/api/Client/client/all?page=1
             @successful_response: HTTP 200 (OK)
             @description: obtiene a todos los clientes registrados en la base de datos. 
         """
