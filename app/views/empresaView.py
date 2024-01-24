@@ -1,4 +1,5 @@
 from rest_framework import viewsets, status
+from django.db.models import Count
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from app.models.model import Empresas
@@ -45,13 +46,30 @@ class EmpresasViewSet(viewsets.ModelViewSet):
         if nombre_buscado is not None:
             queryset = queryset.filter(nombre__icontains=nombre_buscado)
 
+        # Contar total de empresas
+        total_empresas = queryset.count()
+
+        # Contar cuántas empresas tienen el mismo giroempresa
+        giroempresa_counts = queryset.values('giroempresa').annotate(total=Count('giroempresa')).order_by('giroempresa')
+
+        # Convertir a un diccionario para fácil acceso en la respuesta
+        giroempresa_counter = {item['giroempresa']: item['total'] for item in giroempresa_counts}
+
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = EmpresasSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+            return self.get_paginated_response({
+                'total_empresas': total_empresas,
+                'giroempresa_counter': giroempresa_counter,
+                'results': serializer.data
+            })
 
         serializer = EmpresasSerializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response({
+            'total_empresas': total_empresas,
+            'giroempresa_counter': giroempresa_counter,
+            'results': serializer.data
+        })
     
     @action(detail=False, methods=['DELETE'], url_path='delete')
     def destroyEmpre(self, request):
