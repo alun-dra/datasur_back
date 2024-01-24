@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-i-q23!btlikscwldk6j2+m9-^k1jsowobz13w(k*&vc5u2%i%=
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "https://daback.onrender.com/"
+    "daback.onrender.com"
 ]
 
 CORS_ALLOWED_ORIGINS = [
