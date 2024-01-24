@@ -23,12 +23,9 @@ from django.urls import path, include
 # Configuración de la vista de esquema de Swagger
 schema_view = get_schema_view(
    openapi.Info(
-      title="API de Empresas",
+      title="API de datasur",
       default_version='v1',
-      description="Documentación de la API de Empresas",
-      terms_of_service="https://www.tuempresa.com/policies/terms/",
-      contact=openapi.Contact(email="contacto@tuempresa.com"),
-      license=openapi.License(name="BSD License"),
+      description="Documentación de la API de datasur",
    ),
    public=True,
    permission_classes=(permissions.AllowAny,),
